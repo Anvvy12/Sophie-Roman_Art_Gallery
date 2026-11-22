@@ -1,0 +1,149 @@
+{
+  "architecture": {
+    "images": [
+      "01.webp",
+      "02.webp"
+    ],
+    "video": null,
+    "width": 1360,
+    "height": 956
+  },
+  "vyshnevyi-viter": {
+    "images": [
+      "01.webp",
+      "02.webp",
+      "03.webp"
+    ],
+    "video": null,
+    "width": 1120,
+    "height": 1400
+  },
+  "adrum": {
+    "images": [
+      "01.webp",
+      "02.webp",
+      "03.webp",
+      "04.webp",
+      "05.webp",
+      "06.webp",
+      "07.webp",
+      "08.webp",
+      "09.webp",
+      "10.webp",
+      "11.webp",
+      "12.webp",
+      "13.webp",
+      "14.webp",
+      "15.webp"
+    ],
+    "video": null,
+    "width": 1280,
+    "height": 720
+  },
+  "sculptural-lighting": {
+    "images": [
+      "01.webp",
+      "02.webp"
+    ],
+    "video": null,
+    "width": 1254,
+    "height": 1254
+  },
+  "sketches": {
+    "images": [
+      "01.webp",
+      "02.webp",
+      "03.webp",
+      "04.webp",
+      "05.webp",
+      "06.webp",
+      "07.webp",
+      "08.webp",
+      "09.webp"
+    ],
+    "video": null,
+    "width": 1382,
+    "height": 1400
+  },
+  "my-life": {
+    "images": [
+      "01.webp",
+      "02.webp",
+      "03.webp",
+      "04.webp",
+      "05.webp",
+      "06.webp",
+      "07.webp",
+      "08.webp",
+      "09.webp",
+      "10.webp",
+      "11.webp",
+      "12.webp",
+      "13.webp",
+      "14.webp",
+      "15.webp",
+      "16.webp",
+      "17.webp",
+      "18.webp",
+      "19.webp",
+      "20.webp",
+      "21.webp",
+      "22.webp",
+      "23.webp",
+      "24.webp",
+      "25.webp",
+      "26.webp",
+      "27.webp",
+      "28.webp",
+      "29.webp"
+    ],
+    "video": null,
+    "width": 1280,
+    "height": 960
+  },
+  "office-plankton": {
+    "images": [
+      "01.webp",
+      "02.webp",
+      "03.webp",
+      "04.webp",
+      "05.webp",
+      "06.webp",
+      "07.webp"
+    ],
+    "video": null,
+    "width": 1400,
+    "height": 933
+  },
+  "self": {
+    "images": [
+      "01.webp",
+      "02.webp",
+      "03.webp",
+      "04.webp"
+    ],
+    "video": null,
+    "width": 1050,
+    "height": 1400
+  },
+  "the-5th-phase": {
+    "images": [
+      "01.webp"
+    ],
+    "video": "video.mp4",
+    "width": 1024,
+    "height": 1024
+  },
+  "dont-worry-its-private-here": {
+    "images": [
+      "01.webp",
+      "02.webp",
+      "03.webp",
+      "04.webp",
+      "05.webp"
+    ],
+    "video": "video.mp4",
+    "width": 933,
+    "height": 1400
+  }
+}
