@@ -1,7 +1,7 @@
 import type { Project, ProjectMedia } from '../types/project'
 import manifest from '../assets/projects/manifest.json'
 
-export const INSTAGRAM_URL = 'https://www.instagram.com/tomholland2013/'
+export const INSTAGRAM_URL = 'https://www.instagram.com/sofyromann/'
 
 /**
  * Файлы лежат в src/assets/projects/<id>/ и генерируются скриптом
