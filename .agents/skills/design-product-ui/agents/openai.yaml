@@ -1,0 +1,4 @@
+interface:
+  display_name: "Product UI Design"
+  short_description: "Проектирование UX, состояний и UI-системы"
+  default_prompt: "Use $design-product-ui to design the user flow, interface states, and responsive UI for this feature."
