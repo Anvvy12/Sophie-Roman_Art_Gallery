@@ -37,9 +37,13 @@ p {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 18px 16px;
+  padding: 18px 16px 34px;
   pointer-events: none;
-  text-shadow: 0 1px 8px rgb(0 0 0 / 0.35);
+  /* Мягкое затемнение сверху, чтобы белый логотип читался и на светлых фото. */
+  background: linear-gradient(to bottom, rgb(0 0 0 / 0.45), rgb(0 0 0 / 0.18) 55%, transparent);
+  text-shadow:
+    0 0 2px rgb(0 0 0 / 0.5),
+    0 1px 10px rgb(0 0 0 / 0.55);
 }
 
 .header a {
@@ -115,9 +119,13 @@ p {
 .card__caption {
   position: absolute;
   inset: auto 0 0;
-  padding: 0 16px 22px;
+  padding: 56px 16px 22px;
   text-align: center;
-  text-shadow: 0 1px 6px rgb(0 0 0 / 0.4);
+  /* Затемнение снизу карточки под подписью. */
+  background: linear-gradient(to top, rgb(0 0 0 / 0.55), rgb(0 0 0 / 0.2) 60%, transparent);
+  text-shadow:
+    0 0 2px rgb(0 0 0 / 0.5),
+    0 1px 8px rgb(0 0 0 / 0.5);
   pointer-events: none;
 }
 
