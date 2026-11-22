@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Architecture"
+  short_description: "Проектирование архитектуры React-приложения"
+  default_prompt: "Use $design-frontend-architecture to design a maintainable feature architecture for this application."
