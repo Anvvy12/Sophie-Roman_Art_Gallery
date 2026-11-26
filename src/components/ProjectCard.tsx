@@ -84,6 +84,7 @@ export function ProjectCard({ project }: Props) {
       )}
       <div className="card__caption">
         <h2 className="card__title">{project.title}</h2>
+        {project.location && <p className="card__location">{project.location}</p>}
         {project.subtitle && <p className="card__subtitle">{project.subtitle}</p>}
       </div>
     </article>

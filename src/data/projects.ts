@@ -31,16 +31,16 @@ const url = (id: string, file: string) => {
 interface ProjectInfo {
   id: string
   title: string
-  /** Где проходил проект — добавляется к заголовку через тире. */
+  /** Где проходил проект — показывается второй строкой под заголовком. */
   location?: string
   subtitle?: string
 }
 
-function build({ location, ...info }: ProjectInfo): Project {
+function build(info: ProjectInfo): Project {
   const entry = (manifest as Record<string, ManifestEntry>)[info.id]
   if (!entry) throw new Error(`Нет ассетов для проекта «${info.id}»`)
 
-  const title = location ? `${info.title} — ${location}` : info.title
+  const title = info.title
 
   const media: ProjectMedia[] = entry.images.map((file) => ({
     type: 'image',
@@ -57,7 +57,7 @@ function build({ location, ...info }: ProjectInfo): Project {
   // Слишком вытянутые обложки сжимаем, чтобы сетка оставалась ровной.
   const aspectRatio = Math.min(Math.max(natural, 0.65), 1.6)
 
-  return { ...info, title, aspectRatio, media }
+  return { ...info, aspectRatio, media }
 }
 
 export const projects: Project[] = [
