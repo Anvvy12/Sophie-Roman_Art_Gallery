@@ -18,6 +18,8 @@ interface ManifestEntry {
   video: string | null
   width?: number
   height?: number
+  videoWidth?: number
+  videoHeight?: number
 }
 
 const url = (id: string, file: string) => {
@@ -29,27 +31,33 @@ const url = (id: string, file: string) => {
 interface ProjectInfo {
   id: string
   title: string
+  /** Где проходил проект — добавляется к заголовку через тире. */
+  location?: string
   subtitle?: string
-  /** Задать вручную, если пропорции обложки не подходят (например, у видео другие). */
-  aspectRatio?: number
 }
 
-function build(info: ProjectInfo): Project {
+function build({ location, ...info }: ProjectInfo): Project {
   const entry = (manifest as Record<string, ManifestEntry>)[info.id]
   if (!entry) throw new Error(`Нет ассетов для проекта «${info.id}»`)
+
+  const title = location ? `${info.title} — ${location}` : info.title
 
   const media: ProjectMedia[] = entry.images.map((file) => ({
     type: 'image',
     src: url(info.id, file),
-    alt: info.title,
+    alt: title,
   }))
   if (entry.video) media.unshift({ type: 'video', src: url(info.id, entry.video) })
 
-  const natural = entry.width && entry.height ? entry.width / entry.height : 1
+  // Карточка с видео берёт пропорции видео, остальные — обложки.
+  const [w, h] = entry.video
+    ? [entry.videoWidth, entry.videoHeight]
+    : [entry.width, entry.height]
+  const natural = w && h ? w / h : 1
   // Слишком вытянутые обложки сжимаем, чтобы сетка оставалась ровной.
-  const aspectRatio = info.aspectRatio ?? Math.min(Math.max(natural, 0.65), 1.6)
+  const aspectRatio = Math.min(Math.max(natural, 0.65), 1.6)
 
-  return { ...info, aspectRatio, media }
+  return { ...info, title, aspectRatio, media }
 }
 
 export const projects: Project[] = [
@@ -57,7 +65,6 @@ export const projects: Project[] = [
     id: 'dont-worry-its-private-here',
     title: 'Don’t Worry. It’s Private Here',
     subtitle: 'Monumental stained-glass work in collaboration with Sub Rosa',
-    aspectRatio: 960 / 1268, // пропорции видео
   },
   {
     id: 'sculptural-lighting',
@@ -67,13 +74,19 @@ export const projects: Project[] = [
   {
     id: 'the-5th-phase',
     title: 'The 5-th Phase',
+    location: 'Zürich, Switzerland',
     subtitle: 'Video installation, Architecture Festival Zürich 2026',
-    aspectRatio: 16 / 9, // пропорции видео
   },
   {
     id: 'office-plankton',
     title: 'Office Plankton’s New Year',
-    subtitle: 'Personal art exhibition, TAM art space, Kyiv',
+    location: 'Kyiv, Ukraine',
+    subtitle: 'Personal art exhibition, TAM art space',
+  },
+  {
+    id: 'men',
+    title: 'Men',
+    subtitle: 'Watercolors',
   },
   {
     id: 'vyshnevyi-viter',
@@ -83,22 +96,39 @@ export const projects: Project[] = [
   {
     id: 'self',
     title: 'Self',
-    subtitle: 'Group exhibition, OctoTower Galerie, Kyiv',
+    location: 'Kyiv, Ukraine',
+    subtitle: 'Group exhibition, OctoTower Galerie',
+  },
+  {
+    id: 'women',
+    title: 'Women',
+    subtitle: 'Ink drawings',
   },
   {
     id: 'architecture',
     title: 'Architecture',
-    subtitle: 'Group exhibition × Harald Alff, Goethe-Institut in Ukraine, Kyiv',
+    location: 'Kyiv, Ukraine',
+    subtitle: 'Group exhibition × Harald Alff, Goethe-Institut in Ukraine',
   },
   {
     id: 'my-life',
     title: 'My Life',
-    subtitle: 'Personal art exhibition, Sumy',
+    location: 'Sumy, Ukraine',
+    subtitle: 'Personal art exhibition',
+  },
+  {
+    id: 'photo-scans',
+    title: 'Photo scans',
   },
   {
     id: 'adrum',
     title: 'ADRUM',
-    subtitle: 'Group exhibition, Barcelona',
+    location: 'Barcelona, Spain',
+    subtitle: 'Group exhibition',
+  },
+  {
+    id: 'mixed-media',
+    title: 'Mixed media on paper',
   },
   {
     id: 'sketches',

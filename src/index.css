@@ -1,10 +1,13 @@
 :root {
-  --bg: #000;
+  /* Нежно-розовый фон: виден в промежутках между карточками. */
+  --bg: #f8e4ea;
+  /* Заглушка карточки, пока грузится фото. */
+  --placeholder: #efd0da;
   --fg: #fff;
-  --gap: 2px;
+  --gap: 6px;
   --font-body: 'Jost', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
   --font-logo: 'Permanent Marker', 'Jost', cursive;
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 *,
@@ -88,6 +91,7 @@ p {
   display: flex;
   gap: var(--gap);
   align-items: flex-start;
+  padding: var(--gap);
 }
 
 .grid__column {
@@ -104,7 +108,7 @@ p {
   position: relative;
   width: 100%;
   overflow: hidden;
-  background: #111;
+  background: var(--placeholder);
 }
 
 .card__media {

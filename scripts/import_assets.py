@@ -17,6 +17,7 @@ import re
 import shutil
 import subprocess
 import sys
+import unicodedata
 from pathlib import Path
 
 from PIL import Image, ImageOps
@@ -44,17 +45,21 @@ SLUGS = {
     "My Life": "my-life",
     "ADRUM": "adrum",
     "Sketches": "sketches",
+    "MEN": "men",
+    "WOMEN": "women",
+    "Photo scans": "photo-scans",
+    "mixed media": "mixed-media",
 }
 
-# Видео, которые берём для карточки (остальные ролики пропускаем — слишком тяжёлые).
-VIDEO_PICK = {
-    "the-5th-phase": "video installation 15 sec",
-    "dont-worry-its-private-here": "відео",
-}
+
+def nfc(text: str) -> str:
+    # Имена из архивов с macOS приходят в NFD («й» = «и» + знак) — приводим к обычному виду.
+    return unicodedata.normalize("NFC", text)
 
 
 def slug_for(folder: str) -> str | None:
-    # «Self» — короткое слово, сверяем как отдельное слово, чтобы не цеплять «Selfportrait».
+    # Сверяем как отдельное слово: «Self» не цепляет «Selfportrait», «MEN» — «WOMEN».
+    folder = nfc(folder)
     for key, slug in SLUGS.items():
         if re.search(rf"(?<![A-Za-z]){re.escape(key)}(?![A-Za-z])", folder, re.IGNORECASE):
             return slug
@@ -63,7 +68,7 @@ def slug_for(folder: str) -> str | None:
 
 def rank(name: str) -> int:
     """0 — обложка, 1 — помечено художницей, 2 — остальное."""
-    upper = name.upper()
+    upper = nfc(name).upper()
     if any(word in upper for word in ("ПЕРШ", "ГЛАВН")):
         return 0
     if upper.startswith(("ОЦ", "I ОЦ")) or "ОЦЮ" in upper:
@@ -85,12 +90,25 @@ def convert_video(src: Path, dst: Path) -> None:
     subprocess.run(
         [
             "ffmpeg", "-y", "-loglevel", "error", "-i", str(src),
-            "-an", "-vf", "scale='min(960,iw)':-2,fps=30", "-c:v", "libx264",
+            # Длинная сторона до 960px — и для горизонтальных, и для вертикальных роликов.
+            "-an", "-vf",
+            "scale='if(gt(iw,ih),min(960,iw),-2)':'if(gt(iw,ih),-2,min(960,ih))',fps=30",
+            "-c:v", "libx264",
             "-preset", "slow", "-crf", "32", "-pix_fmt", "yuv420p",
             "-movflags", "+faststart", str(dst),
         ],
         check=True,
     )
+
+
+def video_size(path: Path) -> tuple[int, int]:
+    out = subprocess.run(
+        ["ffprobe", "-v", "error", "-select_streams", "v:0",
+         "-show_entries", "stream=width,height", "-of", "csv=p=0", str(path)],
+        check=True, capture_output=True, text=True,
+    ).stdout.strip()
+    width, height = out.split(",")[:2]
+    return int(width), int(height)
 
 
 def main(source: Path) -> None:
@@ -122,11 +140,16 @@ def main(source: Path) -> None:
             if i == 1:
                 entry["width"], entry["height"] = size
 
-        pick = VIDEO_PICK.get(slug)
-        video = next((f for f in files if f.suffix.lower() in VIDEO_EXT and f.stem == pick), None)
+        # Одно видео на карточку: помеченное художницей, иначе первое по имени.
+        videos = sorted(
+            (f for f in files if f.suffix.lower() in VIDEO_EXT),
+            key=lambda f: (rank(f.stem), f.stem.lower()),
+        )
+        video = videos[0] if videos else None
         if video:
             convert_video(video, dest / "video.mp4")
             entry["video"] = "video.mp4"
+            entry["videoWidth"], entry["videoHeight"] = video_size(dest / "video.mp4")
 
         manifest[slug] = entry
         print(f"{slug}: {len(entry['images'])} фото, видео: {'да' if video else 'нет'}")
